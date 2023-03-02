@@ -1,0 +1,29 @@
+<nav class="main-nav overlay clearfix">
+	<a class="blog-logo" href="index.html"><h3 style="color: lightgrey">{{setting('site.title')}}</h3></a>
+	<ul id="menu">
+		<li class="nav-home nav-current" role="presentation"><a href="/">Home</a></li>
+		<li class="nav-article-example" role="presentation" id="btm"><a>Subscribe</a></li>
+		<li class="nav-author-page" role="presentation"><a href="">Author Page</a></li>
+		<span class="socialheader">
+		<a href="{{setting('site.twitter')}}"><span class='symbol'>circletwitterbird</span></a>
+		<a href="{{setting('site.facebook')}}"><span class='symbol'>circlefacebook</span></a>
+		<a href="{{setting('site.googling')}}"><span class='symbol'>circlegoogleplus</span></a>
+		<a href="mailto:{{setting('site.mail')}}"><span class='symbol'>circleemail</span></a>
+		</span>
+	</ul>
+	</nav>
+	<div class="info">
+        <div id="bg-active" class="modal-bg">
+            <div class="modal-form">
+                <div class="modal-close shadow"><button id="modal-close" class="btn btn-danger">X</button></div>
+                <script src="{{ asset('js/modal.js')}}"></script>
+                <h4></h4>
+                <form action="/subscribe" method="post">
+                    @csrf
+                    <p>Enter your email to receive notification every time I post a new article<br>Stay in touch and remain bless <br></p>
+                    <label for="email">Email:</label><input type="email" name="email" id="" required>
+                    <input type="submit" class="btn btn-success" value="Submit">
+                </form>
+            </div>
+        </div>
+    </div>

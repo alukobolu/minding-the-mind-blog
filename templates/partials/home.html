@@ -1,0 +1,68 @@
+@extends('layouts.master')
+@section('content')
+<body class="home-template">
+    <div class="site-wrapper">
+        @include('partials.nav')
+        @include('partials.slider')
+        <main id="content" class="content" role="main">
+        <div class="wraps">
+            <img src="http://localhost/voyager/public/img/shadow.png" class="wrapshadow">
+            <div class="grid">
+            @foreach($posts as $post)
+                    <div class="grid-item eachpost">
+                        <article class="post">
+                        <a href="article.html"><img src="{{ asset(Voyager::image($post->image)) }}" alt=""></a>
+                        <div class="wrapgriditem">
+                            <header class="post-header">
+                            <h2 class="post-title"><a href="/article/{{ $post->slug }}">{{ $post->title }}</a></h2>
+                            </header>
+                            <section class="post-excerpt">
+                            <p>{{ $post->excerpt }}</p>
+                            </section>
+                            <footer class="post-meta">
+                            <img class="author-thumb" src="{{ asset('img/gravatar.jpg')}}" alt="David" nopin="nopin"/>
+                            <a href="author.html">{{ !empty($post->authorId->name)?$post->authorId->name:"Author" }}</a>
+                            <time class="post-date" datetime="{{ $post->created_at }}">{{ $post->created_at }}</time>
+                            </footer>
+                        </div>
+                        </article>
+                    </div>
+            @endforeach
+            </div>
+            <nav class="pagination" role="navigation">
+            <a class="newer-posts prev" href=''>&larr; Previous</a>
+            <span class="page-number">Page </span>
+            <a class="older-posts next" href=''>Next &rarr;</a>
+            </nav>
+        </div>
+        <script type="text/javascript">
+        var start = 0;
+        var nb = 12;
+        var end = start + nb;
+        var length = $('.eachpost').length;
+        var list = $('.eachpost');
+
+        list.hide().filter(':lt('+(end)+')').show();
+
+
+        $('.prev, .next').click(function(e){
+        e.preventDefault();
+
+        if( $(this).hasClass('prev') ){
+            start -= nb;
+        } else {
+            start += nb;
+        }
+
+        if( start < 0 || start >= length ) start = 0;
+        end = start + nb;       
+
+        if( start == 0 ) list.hide().filter(':lt('+(end)+')').show();
+        else list.hide().filter(':lt('+(end)+'):gt('+(start-1)+')').show();
+        });
+    </script>
+        </main>
+        @include('partials.footer')
+    </div>
+</body>
+@endsection

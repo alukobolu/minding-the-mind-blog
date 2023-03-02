@@ -1,0 +1,178 @@
+@extends('layouts.master')
+@section('content')
+<body class="post-template">
+<div class="site-wrapper">
+    @include('partials.nav')
+	<header class="main-header post-head " style="background-image: url({{ asset(Voyager::image($post->image)) }})">
+	<div class="vertical">
+		<div class="main-header-content inner">
+			<h1 class="post-title">{{ $post->title }}</h1>
+			<div class="entry-title-divider">
+				<span></span><span></span><span></span>
+			</div>
+			<section class="post-meta">
+			<time class="post-date" datetime="{{ $post->created_at }}">{{ $post->created_at }}</time> | <a class="scrolltocomments" href="#commen">Comments</a>
+			</section>
+		</div>
+	</div>
+	</header>
+	<main id="content" class="content" role="main"  >
+	
+	<div class="wraps">
+		<img src="{{ asset('img/shadow.png')}} "class='wrapshadow'>
+		<article class="post featured">
+		<section class="post-content">
+		<img src="{{ asset('img/pause.png')}}" alt="play"  id="icon" style="width:50px;height:50px;"  srcset="">
+		<audio autoplay  id="mySong" >
+			<source src="{{asset(Voyager::image($audio->audio))}}" type="audio/mp3" >
+		</audio> 
+		<script>
+			var mySong = document.getElementById("mySong");
+			var icon = document.getElementById("icon");
+
+			
+			icon.onclick = function(){
+				if(mySong.paused){
+					mySong.play();
+					icon.src = "{{ asset('img/pause.png')}}";
+				}else{
+					mySong.pause();
+					icon.src ="{{ asset('img/play-button.png')}}";
+				}
+				
+			}
+			
+		</script>
+			{!! $post->body !!}
+		</section>
+		<footer class="post-footer">
+		<figure class="author-image">
+		<a class="img" href="author.html" style="background-image: url({{ asset(Voyager::image($post->authorId->avatar)) }})"><span class="hidden">David's Picture</span></a>
+		</figure>
+		<section class="author">
+		<h4><a href="/author/ghosty/">{{ !empty($post->authorId->name)?$post->authorId->name:"Author" }}</a></h4>
+		<p>
+		{{ !empty($post->meta_description)?$post->meta_description:"post is nice" }}
+		</p>
+		<div class="author-meta">
+			<span class="author-location icon-location">Nigeria</span>
+			<span class="author-link icon-link"><a >{{$post->created_at}}</a></span>
+		</div>
+		</section>
+		<section class="share">
+		<h4>Share this post</h4>
+		<a class="icon-twitter" href="https://twitter.com/intent/tweet?text=Once%20Upon%20a%20Time&amp;url=#" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+		<span class="hidden">Twitter</span>
+		</a>
+		<a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=#" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+		<span class="hidden">Facebook</span>
+		</a>
+		<a class="icon-whatsapp" href="https://plus.google.com/share?url=#" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+		<span class="hidden">Google+</span>
+		</a>
+		</section>
+		</footer>
+		<footer class="post-footer">
+		<figure class="author-image">
+		<a class="img" style="text-decoration:none;" href="author.html" >Comment &nbsp;&nbsp;&nbsp;&nbsp;Here</a>
+		</figure>
+		<form action="/comment" method="post">
+			@csrf
+			<input type="text" name="name" id="" placeholder="Name"><br>
+			<input type="hidden" name="postid" value="{{$post->id}}">
+			<input type="hidden" name="slug" value="{{$post->slug}}">
+			<textarea name="content" id="" >Comments</textarea> 
+			<input type="submit" value="Submit">
+		</form>
+ <style>
+	form{
+		width: 100%;
+		align:center;	
+	}
+	input[type=text] {
+		width: 100%;
+		height: 30px;
+		outline: none;
+		border: none;
+		border-bottom: 2px solid gray;
+		margin-bottom:10px;
+	}
+	input[type=submit] {
+		width: 80px;
+		height: 50px;
+		outline: none;
+		background-color: lightgreen;
+		border: 2px solid lightgreen;
+		margin-bottom:10px;
+		margin-top:10px;
+		float:center;
+	}
+	textarea {
+		outline: none;
+		width: 100%;
+		height: 150px;
+		padding: 12px 20px;
+		box-sizing: border-box;
+		border: 2px solid #ccc;
+		border-radius: 4px;
+		background-color: #f8f8f8;
+		resize: none;
+	}
+	#commen{
+		height:auto;
+		max-height:800px;
+		overflow-y:scroll;
+	}
+	
+ </style>
+ <br>
+ <br>
+		
+		<div id="commen">
+			@foreach($comment as $commen)
+				<section class="author">
+				
+				<h4><a href="/author/ghosty/">{{ $commen->name }}</a></h4>
+				<p>
+					{{ $commen->content }}
+				</p>
+				<div class="author-meta">
+					<span class="author-location icon-location">Nigeria</span>
+					<span class="author-link icon-link"><a href="">{{ $commen->created_at }}</a></span>
+				</div>
+				
+				</section>
+			@endforeach
+		</div>
+		
+		</footer>
+		<div id="disqus_thread">
+		</div>
+		
+		</article>
+	</div>
+	</main>
+	<div class="clearfix">
+	</div>
+	<!-- <aside class="read-next">
+	<a class="read-next-story " style="background-image: url(http://s3.amazonaws.com/caymandemo/wp-content/uploads/sites/10/2015/09/10175658/j6-520x779-520x600.jpg)" href="article.html">
+	<section class="post">
+	<h2>The first journey in my life</h2>
+	<p>
+		I had accompanied Ashok on several occasions earlier to the glass shop and watched as he ordered glass explaining&hellip;
+	</p>
+	</section>
+	</a>
+	<a class="read-next-story prev " style="background-image: url(http://s3.amazonaws.com/caymandemo/wp-content/uploads/sites/10/2015/09/10175658/j7-520x780-520x600.jpg)" href="article.html">
+	<section class="post">
+	<h2>Few days at his shop</h2>
+	<p>
+		Ashok’s shop is not very large. It is a two-roomed shop on the ground floor of the Gomes&hellip;
+	</p>
+	</section>
+	</a>
+	</aside> -->
+    @include('partials.footer')
+</div>
+</body>
+@endsection
